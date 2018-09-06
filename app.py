@@ -205,6 +205,64 @@ def toyouth():
     temp = json.dumps(result, ensure_ascii=False, separators=(',',':'))
     return temp
 
+#DB데이터 모두 출력
+@app.route("/NationalCost_all", methods=["GET"])
+def NationalCost_all():
+    curs = conn.cursor()
+    curs.execute("select * from NationalCost")
+    result = []
+
+    for row in curs:
+        temp_dic = {
+            'ID' : row[0],
+            'TITLE' : row[1],
+            'CONTENTS' : row[2],
+            'DATE' : row[3],
+            'TARGET' : row[4],
+            'LINK' : row[5],
+            'REGION' : row[6],
+            'ASK' : row[7],
+            'CONTACT' : row[8],
+            'ORIGIN' : row[9],
+            'CATEGORY' : row[10]
+        }
+        result.append(temp_dic)
+
+    temp = json.dumps(result, ensure_ascii=False, separators=(',',':'))
+    return temp
+
+#DB에서 ID와 타이틀 값에 맞는 데이터 출력
+@app.route("/NationalCost",methods=["GET"])
+def NationalCost():
+    ID = request.args.get('ID')
+    TITLE = request.args.get('타이틀')
+    curs = conn.cursor()
+
+    if ID is not None :
+        curs.execute("select * from NationalCost where ID = " + ID)
+    elif TITLE is not None :
+        curs.execute("select * from NationalCost where 타이틀 = " + TITLE)
+
+    result = []
+    for row in curs:
+        temp_dic = {
+            'ID' : row[0],
+            'TITLE' : row[1],
+            'CONTENTS' : row[2],
+            'DATE' : row[3],
+            'TARGET' : row[4],
+            'LINK' : row[5],
+            'REGION' : row[6],
+            'ASK' : row[7],
+            'CONTACT' : row[8],
+            'ORIGIN' : row[9],
+            'CATEGORY' : row[10]
+        }
+        result.append(temp_dic)
+
+    temp = json.dumps(result, ensure_ascii=False, separators=(',',':'))
+    return temp
+
 
 if __name__ == '__main__':
     app.run(host="0.0.0.0", port=8080, debug=True)
