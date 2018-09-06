@@ -1,0 +1,6 @@
+---
+applications:
+- name: testDB
+  buildpack: python_buildpack
+  memory: 100MB
+  instances: 1
