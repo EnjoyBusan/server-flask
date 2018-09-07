@@ -348,6 +348,84 @@ def nationalcost():
             print("error is ==> ", e)
     return "<h1>ERROR</h1>"
 
+#DB데이터 모두 출력
+@app.route("/cityhall_all", methods=["GET"])
+def cityhall_all():
+    i=0
+    while i != 10:
+        try:
+            conn = pymysql.connect( host=mysql_cred['hostname'], port=int(mysql_cred['port']), user=mysql_cred['username'], passwd=mysql_cred['password'], db=mysql_cred['name'], charset='utf8')
+            curs = conn.cursor()
+            curs.execute("select * from cityhall")
+            result = []
+
+            for row in curs:
+                temp_dic = {
+                    'ID' : row[0],
+                    'TITLE' : row[1],
+                    'CONTENTS' : row[2],
+                    'DATE' : row[3],
+                    'TARGET' : row[4],
+                    'LINK' : row[5],
+                    'REGION' : row[6],
+                    'ASK' : row[7],
+                    'CONTACT' : row[8],
+                    'ORIGIN' : row[9],
+                    'CATEGORY' : row[10]
+                }
+                result.append(temp_dic)
+
+            temp = json.dumps(result, ensure_ascii=False, separators=(',',':'))
+            curs.close()
+            conn.close()
+            return temp
+        except Exception as e :
+            i+=1
+            print("error is ==> ", e)
+    return "<h1>ERROR</h1>"
+
+#DB에서 ID와 타이틀 값에 맞는 데이터 출력
+@app.route("/cityhall",methods=["GET"])
+def cityhall():
+    i=0
+    while i != 10:
+        try:
+            ID = request.args.get('ID')
+            TITLE = request.args.get('TITLE')
+            conn = pymysql.connect( host=mysql_cred['hostname'], port=int(mysql_cred['port']), user=mysql_cred['username'], passwd=mysql_cred['password'], db=mysql_cred['name'], charset='utf8')
+            curs = conn.cursor()
+
+            if ID is not None :
+                curs.execute("select * from cityhall where ID = " + ID)
+            elif TITLE is not None :
+                curs.execute("select * from cityhall where TITLE = " + TITLE)
+
+            result = []
+            for row in curs:
+                temp_dic = {
+                    'ID' : row[0],
+                    'TITLE' : row[1],
+                    'CONTENTS' : row[2],
+                    'DATE' : row[3],
+                    'TARGET' : row[4],
+                    'LINK' : row[5],
+                    'REGION' : row[6],
+                    'ASK' : row[7],
+                    'CONTACT' : row[8],
+                    'ORIGIN' : row[9],
+                    'CATEGORY' : row[10]
+                }
+                result.append(temp_dic)
+
+            temp = json.dumps(result, ensure_ascii=False, separators=(',',':'))
+            curs.close()
+            conn.close()
+            return temp
+        except Exception as e :
+            i+=1
+            print("error is ==> ", e)
+    return "<h1>ERROR</h1>"
+
 #DialogFlow와 연동하기위한 route
 @app.route('/webhook', methods=['POST',])
 def create_book():
@@ -369,13 +447,13 @@ def create_book():
         query = "select * from health where TITLE like '%" + str(serviceName) + "%' UNION \
                  select * from bokjiro where TITLE like '%" + str(serviceName) + "%' UNION \
                  select * from toyouth where TITLE like '%" + str(serviceName) + "%' UNION \
+                 select * from cityhall where TITLE like '%" + str(serviceName) + "%' UNION \
                  select * from nationalcost where TITLE like '%" + str(serviceName) + "%'"
 
-        cur.execute(query)
-
-        if cur is None:
+        curcnt = cur.execute(query)
+        print(cur)
+        if curcnt == 0:
             output = "해당 정보를 찾을 수 없습니다..."
-
         else:
             if param['When']:
                 for x in cur:
