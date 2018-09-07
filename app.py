@@ -18,29 +18,21 @@ lists = ['ID', 'TITLE', 'CONTENTS', 'DATE', 'TARGET', 'LINK', 'REGION', 'ASK', '
 #db 모든 데이터 json으로 출력
 @app.route("/")
 def main():
-    return "<h2>/health_all</h2>\
+    return "<a href='http://testdb.paas-ta.co.kr/health_all'>/health_all</a>\
             <p>\
-            <h2>/health?ID=</h2>\
+            <a href='http://testdb.paas-ta.co.kr/health?ID=12'>/health?ID=12</a>\
             <p>\
-            <h2>/health?TITLE=</h2>\
+            <a href='http://testdb.paas-ta.co.kr/bokjiro_all'>/bokjiro_all</a>\
             <p>\
-            <h2>/bokjiro_all</h2>\
+            <a href='http://testdb.paas-ta.co.kr/bokjiro?ID=12'>/bokjiro?ID=</a>\
             <p>\
-            <h2>/bokjiro?ID=</h2>\
+            <a href='http://testdb.paas-ta.co.kr/toyouth_all'>/toyouth_all</>\
             <p>\
-            <h2>/bokjiro?TITLE=</h2>\
+            <a href='http://testdb.paas-ta.co.kr/toyouth?ID=12'>/toyouth?ID=</a>\
             <p>\
-            <h2>/toyouth_all</h2>\
+            <a href='http://testdb.paas-ta.co.kr/nationalcost_all'>/nationalcost_all</a>\
             <p>\
-            <h2>/toyouth?ID=</h2>\
-            <p>\
-            <h2>/toyouth?TITLE=</h2>\
-            <p>\
-            <h2>/nationalcost_all</h2>\
-            <p>\
-            <h2>/nationalcost?ID=</h2>\
-            <p>\
-            <h2>/nationalcost?TITLE=</h2>\
+            <a href='http://testdb.paas-ta.co.kr/nationalcost?ID=12'>/nationalcost?ID=</h2>\
             "
 
 #DB데이터 모두 출력
@@ -75,10 +67,6 @@ def health_all():
             conn.close()
             return temp
         except Exception as e :
-            if curs:
-                curs.close()
-            if conn:
-                conn.close()
             i+=1
             print("error is ==> ", e)
     return "<h1>ERROR</h1>"
@@ -89,23 +77,15 @@ def health():
     i=0
     while i != 10:
         try:
-            AC = []
-            AC[0] = request.args.get('ID')
-            AC[1] = request.args.get('TITLE')
-            AC[2] = request.args.get('CONTENTS')
-            AC[3] = request.args.get('DATE')
-            AC[4] = request.args.get('TARGET')
-            AC[5] = request.args.get('LINK')
-            AC[6] = request.args.get('REGION')
-            AC[7] = request.args.get('ASK')
-            AC[8] = request.args.get('ORIGIN')
-            AC[9] = request.args.get('CATEGORY')
-
+            ID = request.args.get('ID')
+            TITLE = request.args.get('TITLE')
             conn = pymysql.connect( host=mysql_cred['hostname'], port=int(mysql_cred['port']), user=mysql_cred['username'], passwd=mysql_cred['password'], db=mysql_cred['name'], charset='utf8')
             curs = conn.cursor()
-            for i in range(0,10):
-                if AC[i] is not None:
-                    curs.execute("select * from  health where " + lists[i] + " = ")
+
+            if ID is not None :
+                curs.execute("select * from bokjiro where ID = " + ID)
+            elif TITLE is not None :
+                curs.execute("select * from bokjiro where TITLE = " + TITLE)
 
             result = []
             for row in curs:
@@ -130,10 +110,6 @@ def health():
             return temp
         except Exception as e :
             i+=1
-            if curs:
-                curs.close()
-            if conn:
-                conn.close()
             print("error is ==> ", e)
     return "<h1>ERROR</h1>"
 
@@ -170,10 +146,6 @@ def bokjiro_all():
             return temp
         except Exception as e :
             i+=1
-            if curs:
-                curs.close()
-            if conn:
-                conn.close()
             print("error is ==> ", e)
     return "<h1>ERROR</h1>"
 
@@ -216,10 +188,6 @@ def bokjiro():
             return temp
         except Exception as e :
             i+=1
-            if curs:
-                curs.close()
-            if conn:
-                conn.close()
             print("error is ==> ", e)
     return "<h1>ERROR</h1>"
 
@@ -256,10 +224,6 @@ def toyouth_all():
             return temp
         except Exception as e :
             i+=1
-            if curs:
-                curs.close()
-            if conn:
-                conn.close()
             print("error is ==> ", e)
     return "<h1>ERROR</h1>"
 
@@ -302,10 +266,6 @@ def toyouth():
             return temp
         except Exception as e :
             i+=1
-            if curs:
-                curs.close()
-            if conn:
-                conn.close()
             print("error is ==> ", e)
     return "<h1>ERROR</h1>"
 
@@ -342,10 +302,6 @@ def nationalcost_all():
             return temp
         except Exception as e :
             i+=1
-            if curs:
-                curs.close()
-            if conn:
-                conn.close()
             print("error is ==> ", e)
             conn = pymysql.connect( host=mysql_cred['hostname'], port=int(mysql_cred['port']), user=mysql_cred['username'], passwd=mysql_cred['password'], db=mysql_cred['name'], charset='utf8')
     return "<h1>ERROR</h1>"
@@ -362,9 +318,9 @@ def nationalcost():
             curs = conn.cursor()
 
             if ID is not None :
-                curs.execute("select * from Nationalcost where ID = " + ID)
+                curs.execute("select * from nationalcost where ID = " + ID)
             elif TITLE is not None :
-                curs.execute("select * from Nationalcost where TITLE = " + TITLE)
+                curs.execute("select * from nationalcost where TITLE = " + TITLE)
 
             result = []
             for row in curs:
@@ -389,80 +345,91 @@ def nationalcost():
             return temp
         except Exception as e :
             i+=1
-            if curs:
-                curs.close()
-            if conn:
-                conn.close()
             print("error is ==> ", e)
     return "<h1>ERROR</h1>"
 
+#DialogFlow와 연동하기위한 route
 @app.route('/webhook', methods=['POST',])
 def create_book():
+    output = ""
     try:
-        print("do")
         conn = pymysql.connect( host=mysql_cred['hostname'], port=int(mysql_cred['port']), user=mysql_cred['username'], passwd=mysql_cred['password'], db=mysql_cred['name'], charset='utf8')
+        cur = conn.cursor()
+        req = request.data
+        inputData = json.loads(req)['result']
+        print(inputData)
+
+        param = inputData['parameters']
+        contexts = inputData['contexts']
+        # actionName = inputData['action']
+
+        serviceName = contexts[0]['parameters']['any.original']
+        print("serviceName : ", serviceName)
+
+        query = "select * from health where TITLE like '%" + str(serviceName) + "%' UNION \
+                 select * from bokjiro where TITLE like '%" + str(serviceName) + "%' UNION \
+                 select * from toyouth where TITLE like '%" + str(serviceName) + "%' UNION \
+                 select * from nationalcost where TITLE like '%" + str(serviceName) + "%'"
+
+        cur.execute(query)
+
+        if cur is None:
+            output = "해당 정보를 찾을 수 없습니다..."
+
+        else:
+            if param['When']:
+                for x in cur:
+                    txt = str(x[1]) + "의 신청기간은 " + str(x[3]) + "입니다."
+                    output += txt
+                    break
+            elif param['Contact']:
+                for x in cur:
+                    txt = str(x[1]) + "관련 연락처는 " + str(x[8]) + "입니다."
+                    output += txt
+                    break
+            elif param['How']:
+                for x in cur:
+                    txt = str(x[1]) + "관련 신청 방법은 " + str(x[5]) + "에서 확인 바랍니다."
+                    output += txt
+                    break
+            elif param['Where']:
+                for x in cur:
+                    txt = str(x[1]) + "의 위치(주소) " + str(x[6]) + "입니다."
+                    output += txt
+                    break
+            elif param['Who']:
+                for x in cur:
+                    txt = str(x[1]) + "의 적용 대상은 " + str(x[4]) + "입니다"
+                    output += txt
+                    break
+            else :
+                output = "해당 정보를 찾을 수 없습니다..."
+
+        # print("param : {}".format(param))
+        # print("context : {}".format(context))
+        # res_msg = "{'fulfillmentMessages': [{'card': {'title': 'card title', 'subtitle': 'card text'}}]}"
+
     except Exception as e:
-        if conn:
-            conn.close()
+        print("database conn error")
         print(e)
 
-    cur = conn.cursor()
-    req = request.data
-    inputData = json.loads(req)['result']
-    output = ""
-    param = inputData['parameters']
-    context = inputData['contexts']
+        if conn:
+            conn.rollback()
+    else:
+        print("output : ", output)
 
-    serviceName = param['any']
+    finally:
+        if conn:
+            conn.close()
 
-    query = "select * from health where TITLE like '%" + serviceName + "%'"
-
-    cur.execute(query)
-
-    # for x in cur:
-    #     print(x)
-
-    if param['When']:
-        for x in cur:
-            txt = str(x[1]) + "의 신청기간은 " + str(x[3]) + "입니다."
-            output += txt
-            break
-    elif param['Contact']:
-        for x in cur:
-            txt = str(x[1]) + "관련 연락처는 " + str(x[8]) + "입니다."
-            output += txt
-            break
-    elif param['How']:
-        for x in cur:
-            txt = str(x[1]) + "관련 신청 방법은 " + str(x[5]) + "에서 확인 바랍니다."
-            output += txt
-            break
-    elif param['Where']:
-        for x in cur:
-            txt = str(x[1]) + "의 위치(주소) " + str(x[6]) + "입니다."
-            output += txt
-            break
-    elif param['Who']:
-        for x in cur:
-            txt = str(x[1]) + "의 적용 대상은 " + str(x[4]) + "입니다"
-            output += txt
-            break
-    else :
-        output = "error"
-
-    # print("param : {}".format(param))
-    # print("context : {}".format(context))
-
-    print(output)
     res_msg = "{'speech': '%s', 'displayText': '%s'}" % (output, output)
-    # res_msg = "{'fulfillmentMessages': [{'card': {'title': 'card title', 'subtitle': 'card text'}}]}"
-    print(res_msg)
-    cur.close()
-    conn.close()
 
     return res_msg
 
 
 
+
+
+
 if __name__ == '__main__':
-    app.run(host="0.0.0.0", port=8080, debug=True)
+    app.run(host="0.0.0.0", port=8080, debug=False)
