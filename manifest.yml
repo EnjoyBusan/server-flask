@@ -1,6 +1,6 @@
 ---
 applications:
-- name: testDB
+- name: flask_server
   buildpack: python_buildpack
-  memory: 100MB
+  memory: 128MB
   instances: 1
