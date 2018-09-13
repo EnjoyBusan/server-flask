@@ -505,7 +505,381 @@ def create_book():
     return res_msg
 
 
+#고용
+@app.route("/hire", methods=["GET"])
+def hire():
+    i=0
+    while i != 10:
+        try:
+            conn = pymysql.connect( host=mysql_cred['hostname'], port=int(mysql_cred['port']), user=mysql_cred['username'], passwd=mysql_cred['password'], db=mysql_cred['name'], charset='utf8')
+            curs = conn.cursor()
 
+
+            req = request.data
+            serviceName = "고용"
+            query = "select * from health where CATEGORY like '%" + str(serviceName) + "%' UNION \
+                     select * from bokjiro where CATEGORY like '%" + str(serviceName) + "%' UNION \
+                     select * from toyouth where CATEGORY like '%" + str(serviceName) + "%' UNION \
+                     select * from cityhall where CATEGORY like '%" + str(serviceName) + "%' UNION \
+                     select * from nationalcost where CATEGORY like '%" + str(serviceName) + "%'"
+
+            curs.execute(query)
+
+            result = []
+
+            for row in curs:
+                temp_dic = {
+                    'ID' : row[0],
+                    'TITLE' : row[1],
+                    'CONTENTS' : row[2],
+                    'DATE' : row[3],
+                    'TARGET' : row[4],
+                    'LINK' : row[5],
+                    'REGION' : row[6],
+                    'ASK' : row[7],
+                    'CONTACT' : row[8],
+                    'ORIGIN' : row[9],
+                    'CATEGORY' : row[10]
+                }
+                result.append(temp_dic)
+
+            temp = json.dumps(result, ensure_ascii=False, separators=(',',':'))
+            curs.close()
+            conn.close()
+            return temp
+        except Exception as e :
+            i+=1
+            print("error is ==> ", e)
+    return "<h1>ERROR</h1>"
+
+#문화
+@app.route("/culture", methods=["GET"])
+def culture():
+    i=0
+    while i != 10:
+        try:
+            conn = pymysql.connect( host=mysql_cred['hostname'], port=int(mysql_cred['port']), user=mysql_cred['username'], passwd=mysql_cred['password'], db=mysql_cred['name'], charset='utf8')
+            curs = conn.cursor()
+
+
+            req = request.data
+            serviceName = "문화"
+            query = "select * from health where CATEGORY like '%" + str(serviceName) + "%' UNION \
+                     select * from bokjiro where CATEGORY like '%" + str(serviceName) + "%' UNION \
+                     select * from toyouth where CATEGORY like '%" + str(serviceName) + "%' UNION \
+                     select * from cityhall where CATEGORY like '%" + str(serviceName) + "%' UNION \
+                     select * from nationalcost where CATEGORY like '%" + str(serviceName) + "%'"
+
+            curs.execute(query)
+
+            result = []
+
+            for row in curs:
+                temp_dic = {
+                    'ID' : row[0],
+                    'TITLE' : row[1],
+                    'CONTENTS' : row[2],
+                    'DATE' : row[3],
+                    'TARGET' : row[4],
+                    'LINK' : row[5],
+                    'REGION' : row[6],
+                    'ASK' : row[7],
+                    'CONTACT' : row[8],
+                    'ORIGIN' : row[9],
+                    'CATEGORY' : row[10]
+                }
+                result.append(temp_dic)
+
+            temp = json.dumps(result, ensure_ascii=False, separators=(',',':'))
+            curs.close()
+            conn.close()
+            return temp
+        except Exception as e :
+            i+=1
+            print("error is ==> ", e)
+    return "<h1>ERROR</h1>"
+
+#의료
+@app.route("/cure", methods=["GET"])
+def cure():
+    i=0
+    while i != 10:
+        try:
+            conn = pymysql.connect( host=mysql_cred['hostname'], port=int(mysql_cred['port']), user=mysql_cred['username'], passwd=mysql_cred['password'], db=mysql_cred['name'], charset='utf8')
+            curs = conn.cursor()
+
+
+            req = request.data
+            serviceName = "의료"
+            query = "select * from health where CATEGORY like '%" + str(serviceName) + "%' UNION \
+                     select * from bokjiro where CATEGORY like '%" + str(serviceName) + "%' UNION \
+                     select * from toyouth where CATEGORY like '%" + str(serviceName) + "%' UNION \
+                     select * from cityhall where CATEGORY like '%" + str(serviceName) + "%' UNION \
+                     select * from nationalcost where CATEGORY like '%" + str(serviceName) + "%'"
+
+            curs.execute(query)
+
+            result = []
+
+            for row in curs:
+                temp_dic = {
+                    'ID' : row[0],
+                    'TITLE' : row[1],
+                    'CONTENTS' : row[2],
+                    'DATE' : row[3],
+                    'TARGET' : row[4],
+                    'LINK' : row[5],
+                    'REGION' : row[6],
+                    'ASK' : row[7],
+                    'CONTACT' : row[8],
+                    'ORIGIN' : row[9],
+                    'CATEGORY' : row[10]
+                }
+                result.append(temp_dic)
+
+            temp = json.dumps(result, ensure_ascii=False, separators=(',',':'))
+            curs.close()
+            conn.close()
+            return temp
+        except Exception as e :
+            i+=1
+            print("error is ==> ", e)
+    return "<h1>ERROR</h1>"
+
+#보호안전
+@app.route("/secure", methods=["GET"])
+def secure():
+    i=0
+    while i != 10:
+        try:
+            conn = pymysql.connect( host=mysql_cred['hostname'], port=int(mysql_cred['port']), user=mysql_cred['username'], passwd=mysql_cred['password'], db=mysql_cred['name'], charset='utf8')
+            curs = conn.cursor()
+
+
+            req = request.data
+            serviceName = "보호안전"
+            query = "select * from health where CATEGORY like '%" + str(serviceName) + "%' UNION \
+                     select * from bokjiro where CATEGORY like '%" + str(serviceName) + "%' UNION \
+                     select * from toyouth where CATEGORY like '%" + str(serviceName) + "%' UNION \
+                     select * from cityhall where CATEGORY like '%" + str(serviceName) + "%' UNION \
+                     select * from nationalcost where CATEGORY like '%" + str(serviceName) + "%'"
+
+            curs.execute(query)
+
+            result = []
+
+            for row in curs:
+                temp_dic = {
+                    'ID' : row[0],
+                    'TITLE' : row[1],
+                    'CONTENTS' : row[2],
+                    'DATE' : row[3],
+                    'TARGET' : row[4],
+                    'LINK' : row[5],
+                    'REGION' : row[6],
+                    'ASK' : row[7],
+                    'CONTACT' : row[8],
+                    'ORIGIN' : row[9],
+                    'CATEGORY' : row[10]
+                }
+                result.append(temp_dic)
+
+            temp = json.dumps(result, ensure_ascii=False, separators=(',',':'))
+            curs.close()
+            conn.close()
+            return temp
+        except Exception as e :
+            i+=1
+            print("error is ==> ", e)
+    return "<h1>ERROR</h1>"
+
+#생활
+@app.route("/life", methods=["GET"])
+def life():
+    i=0
+    while i != 10:
+        try:
+            conn = pymysql.connect( host=mysql_cred['hostname'], port=int(mysql_cred['port']), user=mysql_cred['username'], passwd=mysql_cred['password'], db=mysql_cred['name'], charset='utf8')
+            curs = conn.cursor()
+
+
+            req = request.data
+            serviceName = "생활"
+            query = "select * from health where CATEGORY like '%" + str(serviceName) + "%' UNION \
+                     select * from bokjiro where CATEGORY like '%" + str(serviceName) + "%' UNION \
+                     select * from toyouth where CATEGORY like '%" + str(serviceName) + "%' UNION \
+                     select * from cityhall where CATEGORY like '%" + str(serviceName) + "%' UNION \
+                     select * from nationalcost where CATEGORY like '%" + str(serviceName) + "%'"
+
+            curs.execute(query)
+
+            result = []
+
+            for row in curs:
+                temp_dic = {
+                    'ID' : row[0],
+                    'TITLE' : row[1],
+                    'CONTENTS' : row[2],
+                    'DATE' : row[3],
+                    'TARGET' : row[4],
+                    'LINK' : row[5],
+                    'REGION' : row[6],
+                    'ASK' : row[7],
+                    'CONTACT' : row[8],
+                    'ORIGIN' : row[9],
+                    'CATEGORY' : row[10]
+                }
+                result.append(temp_dic)
+
+            temp = json.dumps(result, ensure_ascii=False, separators=(',',':'))
+            curs.close()
+            conn.close()
+            return temp
+        except Exception as e :
+            i+=1
+            print("error is ==> ", e)
+    return "<h1>ERROR</h1>"
+
+#금융
+@app.route("/cash", methods=["GET"])
+def cash():
+    i=0
+    while i != 10:
+        try:
+            conn = pymysql.connect( host=mysql_cred['hostname'], port=int(mysql_cred['port']), user=mysql_cred['username'], passwd=mysql_cred['password'], db=mysql_cred['name'], charset='utf8')
+            curs = conn.cursor()
+
+
+            req = request.data
+            serviceName = "금융"
+            query = "select * from health where CATEGORY like '%" + str(serviceName) + "%' UNION \
+                     select * from bokjiro where CATEGORY like '%" + str(serviceName) + "%' UNION \
+                     select * from toyouth where CATEGORY like '%" + str(serviceName) + "%' UNION \
+                     select * from cityhall where CATEGORY like '%" + str(serviceName) + "%' UNION \
+                     select * from nationalcost where CATEGORY like '%" + str(serviceName) + "%'"
+
+            curs.execute(query)
+
+            result = []
+
+            for row in curs:
+                temp_dic = {
+                    'ID' : row[0],
+                    'TITLE' : row[1],
+                    'CONTENTS' : row[2],
+                    'DATE' : row[3],
+                    'TARGET' : row[4],
+                    'LINK' : row[5],
+                    'REGION' : row[6],
+                    'ASK' : row[7],
+                    'CONTACT' : row[8],
+                    'ORIGIN' : row[9],
+                    'CATEGORY' : row[10]
+                }
+                result.append(temp_dic)
+
+            temp = json.dumps(result, ensure_ascii=False, separators=(',',':'))
+            curs.close()
+            conn.close()
+            return temp
+        except Exception as e :
+            i+=1
+            print("error is ==> ", e)
+    return "<h1>ERROR</h1>"
+
+#주거
+@app.route("/house", methods=["GET"])
+def house():
+    i=0
+    while i != 10:
+        try:
+            conn = pymysql.connect( host=mysql_cred['hostname'], port=int(mysql_cred['port']), user=mysql_cred['username'], passwd=mysql_cred['password'], db=mysql_cred['name'], charset='utf8')
+            curs = conn.cursor()
+
+
+            req = request.data
+            serviceName = "주거"
+            query = "select * from health where CATEGORY like '%" + str(serviceName) + "%' UNION \
+                     select * from bokjiro where CATEGORY like '%" + str(serviceName) + "%' UNION \
+                     select * from toyouth where CATEGORY like '%" + str(serviceName) + "%' UNION \
+                     select * from cityhall where CATEGORY like '%" + str(serviceName) + "%' UNION \
+                     select * from nationalcost where CATEGORY like '%" + str(serviceName) + "%'"
+
+            curs.execute(query)
+
+            result = []
+
+            for row in curs:
+                temp_dic = {
+                    'ID' : row[0],
+                    'TITLE' : row[1],
+                    'CONTENTS' : row[2],
+                    'DATE' : row[3],
+                    'TARGET' : row[4],
+                    'LINK' : row[5],
+                    'REGION' : row[6],
+                    'ASK' : row[7],
+                    'CONTACT' : row[8],
+                    'ORIGIN' : row[9],
+                    'CATEGORY' : row[10]
+                }
+                result.append(temp_dic)
+
+            temp = json.dumps(result, ensure_ascii=False, separators=(',',':'))
+            curs.close()
+            conn.close()
+            return temp
+        except Exception as e :
+            i+=1
+            print("error is ==> ", e)
+    return "<h1>ERROR</h1>"
+
+#교육
+@app.route("/edu", methods=["GET"])
+def edu():
+    i=0
+    while i != 10:
+        try:
+            conn = pymysql.connect( host=mysql_cred['hostname'], port=int(mysql_cred['port']), user=mysql_cred['username'], passwd=mysql_cred['password'], db=mysql_cred['name'], charset='utf8')
+            curs = conn.cursor()
+
+
+            req = request.data
+            serviceName = "교육"
+            query = "select * from health where CATEGORY like '%" + str(serviceName) + "%' UNION \
+                     select * from bokjiro where CATEGORY like '%" + str(serviceName) + "%' UNION \
+                     select * from toyouth where CATEGORY like '%" + str(serviceName) + "%' UNION \
+                     select * from cityhall where CATEGORY like '%" + str(serviceName) + "%' UNION \
+                     select * from nationalcost where CATEGORY like '%" + str(serviceName) + "%'"
+
+            curs.execute(query)
+
+            result = []
+
+            for row in curs:
+                temp_dic = {
+                    'ID' : row[0],
+                    'TITLE' : row[1],
+                    'CONTENTS' : row[2],
+                    'DATE' : row[3],
+                    'TARGET' : row[4],
+                    'LINK' : row[5],
+                    'REGION' : row[6],
+                    'ASK' : row[7],
+                    'CONTACT' : row[8],
+                    'ORIGIN' : row[9],
+                    'CATEGORY' : row[10]
+                }
+                result.append(temp_dic)
+
+            temp = json.dumps(result, ensure_ascii=False, separators=(',',':'))
+            curs.close()
+            conn.close()
+            return temp
+        except Exception as e :
+            i+=1
+            print("error is ==> ", e)
+    return "<h1>ERROR</h1>"
 
 
 
