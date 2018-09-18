@@ -1,1 +1,3 @@
-flask + mysql 서버
+#server-flask
+
+REST API
